@@ -1,18 +1,28 @@
 package com.ju.springboot.reactive;
 
-import java.time.Duration;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import com.ju.springboot.reactive.vaccine.VaccineProvider;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @SpringBootTest
 class ReactivedemoApplicationTests {
+	
+	@Autowired
+	VaccineProvider provider;
+	
+	@Test
+	void testVaccineProvider() {
+		provider.provideVaccines().subscribe(new VaccineConsumer());
+	}
 
 	@Test
 	void testMono() {
