@@ -8,17 +8,29 @@ import org.reactivestreams.Subscription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.ju.springboot.reactive.vaccine.Vaccine;
 import com.ju.springboot.reactive.vaccine.VaccineConsumer;
 import com.ju.springboot.reactive.vaccine.VaccineProvider;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @SpringBootTest
 class ReactivedemoApplicationTests {
 	
 	@Autowired
 	VaccineProvider provider;
+	
+	@Test
+	void testVaccineProvider_reactive() {
+		StepVerifier.create(provider.provideVaccines())
+		.expectSubscription()
+		.expectNext(new Vaccine("Pfizer"))
+		.expectNext(new Vaccine("J&J"))
+		.expectNext(new Vaccine("CoronaVac"))
+		.expectComplete().verify();
+	}
 	
 	@Test
 	void testVaccineProvider() {
