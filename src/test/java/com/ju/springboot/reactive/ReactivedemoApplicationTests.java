@@ -33,6 +33,14 @@ class ReactivedemoApplicationTests {
 	}
 	
 	@Test
+	void testVaccineProvider_reactive_expectNextCount() {
+		StepVerifier.create(provider.provideVaccines())
+		.expectSubscription()
+		.expectNextCount(3)
+		.expectComplete().verify();
+	}
+	
+	@Test
 	void testVaccineProvider() {
 		provider.provideVaccines().subscribe(new VaccineConsumer());
 	}
