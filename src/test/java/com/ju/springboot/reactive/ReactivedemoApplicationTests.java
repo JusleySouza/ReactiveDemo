@@ -1,5 +1,9 @@
 package com.ju.springboot.reactive;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
@@ -27,6 +31,20 @@ class ReactivedemoApplicationTests {
 		StepVerifier.create(provider.provideVaccines())
 		.expectSubscription()
 		.expectNext(new Vaccine("Pfizer"))
+		.expectNext(new Vaccine("J&J"))
+		.expectNext(new Vaccine("CoronaVac"))
+		.expectComplete().verify();
+	}
+	
+	@Test
+	void testVaccineProvider_reactive_assertThat() {
+		StepVerifier.create(provider.provideVaccines())
+		.expectSubscription()
+		.assertNext(vaccine -> {
+			assertThat(vaccine.getName()).isNotNull();
+			assertTrue(vaccine.isDelivered());
+			assertEquals("Pfizer", vaccine.getName());
+		})
 		.expectNext(new Vaccine("J&J"))
 		.expectNext(new Vaccine("CoronaVac"))
 		.expectComplete().verify();
