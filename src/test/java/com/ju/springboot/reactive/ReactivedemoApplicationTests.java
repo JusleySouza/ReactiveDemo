@@ -45,8 +45,10 @@ class ReactivedemoApplicationTests {
 			assertTrue(vaccine.isDelivered());
 			assertEquals("Pfizer", vaccine.getName());
 		})
-		.expectNext(new Vaccine("J&J"))
-		.expectNext(new Vaccine("CoronaVac"))
+		.thenConsumeWhile(vaccine -> {
+			System.out.println("Vaccine name while consuming " + vaccine.getName());
+			return true;
+		})
 		.expectComplete().verify();
 	}
 	
